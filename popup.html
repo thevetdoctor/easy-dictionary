@@ -1,0 +1,36 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>Easy Dictionary</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+  </head>
+  <body>
+    <header>
+      <img src="assets/img/icon.png" alt="logo">
+      <p>
+        Easy dictionary gives you access to a wide range of words across the web
+      </p>
+    </header>
+
+    <form>
+      <select class="options">
+        <option value="definition">Definition</option>
+        <option value="synonyms">Synonym(s)</option>
+        <option value="antonyms">Antonym(s)</option>
+      </select>
+
+      <input type="text" placeholder="Enter word here" autofocus="autofocus" required>
+
+      <button>
+        Find <span class="option">definition</span>
+      </button>
+    </form>
+
+    <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
+    <script src="assets/js/keys.js"></script>
+    <script src="assets/js/userchoice.js"></script>
+    <script src="assets/js/popup.js"></script>
+  </body>
+</html>
+

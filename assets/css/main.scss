@@ -1,0 +1,34 @@
+body {
+  width: 400px;
+  height: 400px;
+  text-align: center;
+}
+
+img {
+  max-width: 100%;
+  margin: 0 auto;
+  width: 30px;
+}
+
+input {
+  outline: 0;
+  padding: 15px;
+  display: block;
+  width: 80%;
+  margin: 10px auto;
+}
+
+button {
+  background-color: #cd1616;
+  border: 0;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  margin: 5px auto;
+  padding: 7px 12px;
+
+  &:focus {
+    outline: 0;
+  }
+}
