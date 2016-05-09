@@ -20,14 +20,22 @@
         <option value="antonyms">Antonym(s)</option>
       </select>
 
-      <input type="text" placeholder="Enter word here" autofocus="autofocus" required>
+      <input type="text" placeholder="Enter word here" required>
 
       <button>
         Find <span class="option">definition</span>
       </button>
     </form>
 
-    <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
+    <div class="results">
+      <h1 class="word-container"></h1>
+      <span class="pronunciation"></span>
+      <div class="definitions">
+        <ol></ol>
+      </div>
+    </div>
+
+    <script src="assets/js/vendor/firebase.min.js"></script>
     <script src="assets/js/keys.js"></script>
     <script src="assets/js/userchoice.js"></script>
     <script src="assets/js/popup.js"></script>
