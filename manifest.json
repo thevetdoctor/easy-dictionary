@@ -22,5 +22,5 @@
     "activeTab",
     "<all_urls>"
   ],
-  "content_security_policy": "script-src 'self' https://easy-dictionary.firebaseio.com/; object-src 'self'"
+  "content_security_policy": "script-src 'self' https://*.firebaseio.com/; object-src 'self'"
 }
