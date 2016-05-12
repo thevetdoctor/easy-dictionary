@@ -1,5 +1,5 @@
 (function () {
-  // "use strict";
+  "use strict";
 
   function wordsApiReq(verb, url, callback) {
     let req = new XMLHttpRequest();
