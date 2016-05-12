@@ -1,14 +1,14 @@
 (function () {
-  // "use strict";
+  "use strict";
 
   function wordsApiReq(verb, url, callback) {
-    var req = new XMLHttpRequest();
+    let req = new XMLHttpRequest();
 
     req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
         callback(JSON.parse(req.responseText));
       } else if (req.status === 404 && req.readyState === 4) {
-        callback({result: "No definition found", word: url.split("/").slice(-1).toString()});
+        callback({result: "No definition found", word: url.split("/").slice(-1).join("")});
       }
     }
 
@@ -17,7 +17,7 @@
     req.send();
   }
 
-  var app = {};
+  let app = {};
 
   app.model = {
     db: function () {
@@ -39,6 +39,21 @@
         elem.removeChild(elem.firstChild);
       }
     },
+    count: function (elem, arr) {
+      let reps = 0;
+      arr.forEach(function (item) {
+        if (item === elem) reps += 1;
+      });
+
+      return reps;
+    },
+    uniq: function (arr) {
+      let res = new Set();
+
+      arr.forEach((item) => res.add(item));
+
+      return Array.from(res);
+    },
     apiUrl: "https://wordsapiv1.p.mashape.com/words/"
   };
 
@@ -53,9 +68,35 @@
   };
 
   app.controller = {
+    show: function (option, data, frag) {
+      let optionResults = [];
+
+      data.results.forEach(function (item) {
+        if (item[option]) {
+          item[option].forEach(function (val) {
+            optionResults.push(val);
+          });
+        } 
+      });
+
+      optionResults = app.model.uniq(optionResults);
+
+      optionResults.forEach(function (item) {
+        let li = document.createElement("li"),
+            p = document.createElement("p");
+
+        p.textContent = item;
+
+        li.appendChild(p);
+        frag.appendChild(li);
+      });
+    },
     returnResult: function (res, option) {
-      var frag = document.createDocumentFragment();
+      let frag = document.createDocumentFragment(),
+          optionResults = [];
+
       if (res.result === "No definition found") {
+        app.view.resultPane.style.border = "0";
         app.model.removeChildren(app.view.definitions);
         app.view.wordContainer.textContent = res.word;
         app.view.pronunciation.textContent = "No results found!";
@@ -63,29 +104,38 @@
 
       app.view.wordContainer.textContent = app.model.capitalize(res.word);
       app.view.pronunciation.textContent = `/${res.pronunciation.all}/`;
-      
-      res.results.forEach(function (item) {
-        var li = document.createElement("li"),
-            h5 = document.createElement("h5"),
-            p = document.createElement("p");
 
-        h5.textContent = item[option];
-        p.textContent = item.partOfSpeech;
+      if (option === "definition") {
+        res.results.forEach(function (item) {
+          let li = document.createElement("li"),
+              h5 = document.createElement("h5"),
+              p = document.createElement("p");
 
-        li.appendChild(h5);
-        li.appendChild(p);
+            h5.textContent = item.definition;
+            p.textContent = item.partOfSpeech;
 
-        frag.appendChild(li);
-      });
+            li.appendChild(h5);
+            li.appendChild(p);
+
+            frag.appendChild(li);   
+        });
+      }
+
+      if (option === "synonyms") {
+        this.show("synonyms", res, frag);
+      }
+
+      if (option === "antonyms") {
+        this.show("antonyms", res, frag);
+      }
 
       app.model.removeChildren(app.view.definitions);
       app.view.resultPane.style.border = "1px solid #eee";
       app.view.definitions.appendChild(frag);
-      global = res;
       return;
     },
     fetchAndSaveExternalResult: function (word, option) {
-      var reqUrl = `${app.model.apiUrl}${word}`,
+      let reqUrl = `${app.model.apiUrl}${word}`,
           db = app.model.db();
       
       wordsApiReq("get", reqUrl, function (res) {
@@ -96,7 +146,7 @@
       
     },
     queryApis: function (word, option) {
-      var db = app.model.db(),
+      let db = app.model.db(),
           words = db.child("words"),
           result;
 
@@ -111,7 +161,7 @@
     getUserWord: function () {
       app.view.form.addEventListener("submit", function (e) {
         e.preventDefault();
-        var word = app.view.word.value.toLowerCase();
+        let word = app.view.word.value.toLowerCase();
 
         app.view.word.value = "";
 
